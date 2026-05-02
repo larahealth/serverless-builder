@@ -1,0 +1,148 @@
+version: 1
+schema: lara.service.v1
+repo: serverless-builder
+service:
+  name: serverless-builder
+  type: library
+  status: active
+  owner: platform-engineering
+  summary: Python DSL for generating Serverless Framework configuration, AWS resources, Lambda functions, AppSync resolvers, and supporting serverless plugins.
+  high_level_functionality:
+    - Provides a Python interface for rendering serverless.yml files for Serverless Framework services.
+    - Provides AWS Lambda function builders for generic handlers, HTTP/API Gateway, AppSync, EventBridge, SQS, S3, DynamoDB streams, Kinesis, and WebSocket events.
+    - Provides AWS resource and IAM helpers for DynamoDB, SQS, S3, Kinesis, KMS, CloudWatch Logs, API Gateway responses, and predefined permission sets.
+    - Provides plugin and feature helpers for Python requirements, pruning, IAM roles, deployment buckets, secrets, code signing, localstack, custom domains, concurrency, DLQs, X-Ray, encryption, API keys, and Step Functions.
+    - Provides AppSync integration that discovers Pydantic/GraphQL resolver registrations and emits Serverless AppSync datasource and resolver configuration.
+    - Provides integrations for AWS Lambda Powertools idempotency support, Sentry environment wiring, and EventBridge dispatch DLQ resources.
+    - Publishes the Python package from GitHub Releases after building distributable artifacts.
+  domain_tags:
+    - shared-library
+    - serverless
+    - infrastructure
+    - appsync
+    - python
+    - serverless-framework
+  owns_entities:
+    - serverless-builder-python-dsl
+    - serverless-yml-renderer
+    - lambda-function-builder-contract
+    - appsync-schema-builder
+    - appsync-resolver-configuration-contract
+    - serverless-plugin-configuration-contract
+artifacts:
+  apis:
+    - "Python package API: serverless"
+    - "CLI entrypoint: slscli"
+    - "Service rendering API for serverless.yml generation"
+    - "AWS provider, feature, function, IAM, and resource builder APIs"
+    - "Troposphere-backed CloudFormation resource composition helpers"
+    - "Serverless Framework plugin configuration helpers"
+  graphql:
+    - "AppSync Lambda function builder and resolver configuration API"
+    - "Pydantic/GraphQL resolver discovery and datasource generation helpers"
+  events:
+    - "EventBridge Lambda event builder"
+    - "Event dispatcher integration with EventBridge publish IAM and DLQ resources"
+    - "Scheduled Step Functions event helper"
+  queues:
+    - "SQS Lambda event builder"
+    - "DLQ configuration helpers for Lambda async delivery and EventBridge dispatcher failures"
+dependencies:
+  repos: []
+  external:
+    - "Python >=3.10,<4.0"
+    - "Serverless Framework"
+    - "PyYAML"
+    - "troposphere"
+    - "awacs"
+    - "inflection"
+    - "Pydantic 2"
+    - "pydantic-extra-types"
+    - "Strawberry GraphQL"
+    - "AWS Lambda Powertools integration support"
+    - "Sentry integration support"
+    - "GitHub Actions"
+    - "PyPI publishing workflow"
+connections:
+  inbound:
+    apis:
+      - "Lara Serverless Framework service repositories import serverless-builder to generate serverless.yml files and AWS resource configuration."
+      - "Developers can invoke the slscli entrypoint exposed by the Python package."
+    graphql:
+      - "AppSync service repositories can use serverless-builder AppSync function helpers to emit Lambda datasources and resolver configuration."
+    events:
+      - "Event-driven service repositories can use serverless-builder EventBridge and scheduled Step Functions helpers."
+    queues:
+      - "Queue consumer service repositories can use serverless-builder SQS event and DLQ helpers."
+  outbound:
+    apis:
+      - "GitHub Actions builds and publishes Python package distributions when a GitHub Release is published."
+      - "Generated service configuration targets Serverless Framework deployment workflows."
+      - "Troposphere and awacs are used to construct CloudFormation and IAM documents."
+    graphql: []
+    events:
+      - "Generated service configuration can publish to EventBridge when EventDispatcher is enabled."
+    queues:
+      - "Generated service configuration can create and wire SQS queues and DLQs."
+prod_env:
+  runtime: python-package
+  platform: python-package-registry
+  deployment: github-actions-publish-from-release
+local_env:
+  runtimes:
+    - python 3.10+
+  package_managers:
+    - poetry
+docs:
+  readme: README.md
+  architecture: null
+  guides:
+    - docs/index.md
+    - docs/getting_started.md
+    - docs/advanced.md
+    - docs/concept.md
+    - docs/ci.md
+    - docs/resources/api_gateway.md
+    - docs/resources/dynamodb.md
+    - docs/resources/event_bridge.md
+    - docs/resources/functions.md
+    - docs/resources/iam.md
+    - docs/integrations/power_tools.md
+    - docs/integrations/sentry.md
+    - docs/integrations/step_functions.md
+  unresolved_uncertainty:
+    - "repos.yml says Lara publishes patched package builds to Gemfury, while the current README and release workflow describe PyPI publishing."
+observability:
+  sentry_project: null
+  dashboards: []
+  telemetry:
+    - "Sentry integration can inject SENTRY_DSN, SENTRY_ENVIRONMENT, and SENTRY_RELEASE into generated service configuration."
+    - "Powertools integration can inject POWERTOOLS_SERVICE_NAME and POWERTOOLS_LOGGER_LOG_EVENT into generated service configuration."
+    - "X-Ray feature helpers can emit provider tracing configuration for generated services."
+metadata_sources:
+  repo_manifest: .lara/repo-manifest.yml
+  toolkit: null
+  derived_from:
+    - AGENTS.md
+    - README.md
+    - docs/index.md
+    - docs/getting_started.md
+    - docs/advanced.md
+    - docs/concept.md
+    - docs/ci.md
+    - docs/resources/api_gateway.md
+    - docs/resources/dynamodb.md
+    - docs/resources/event_bridge.md
+    - docs/resources/functions.md
+    - docs/resources/iam.md
+    - docs/integrations/power_tools.md
+    - docs/integrations/sentry.md
+    - docs/integrations/step_functions.md
+    - pyproject.toml
+    - poetry.lock
+    - .lara/repo-manifest.yml
+    - .github/workflows/release.yml
+    - .github/workflows/geerate_docs.yml
+    - serverless/
+    - repos.yml
+    - service-catalog/index.yml
