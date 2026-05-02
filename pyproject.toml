@@ -1,19 +1,20 @@
 [tool.poetry]
 name = "serverless-builder"
-version = "2.19.6"
+version = "2.19.6.post1"
 description = "Python interface to easily generate `serverless.yml`."
 keywords = ["library", "serverless"]
 authors = ["Epsy <engineering@epsyhealth.com>"]
 license = "MIT"
 readme = "README.md"
-homepage = "https://epsylabs.github.io/serverless-builder/"
-repository = "https://github.com/epsylabs/serverless-builder"
+homepage = "https://github.com/larahealth/serverless-builder"
+repository = "https://github.com/larahealth/serverless-builder"
 classifiers = [
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3 :: Only",
 ]
 
@@ -22,12 +23,12 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.10"
 PyYAML = "^6.0"
 troposphere = "^4.0.2"
 inflection = "^0.5.1"
 awacs = "^2.1.0"
-strawberry-graphql = "^0.265.1"
+strawberry-graphql = ">=0.312.3,<0.316"
 pydantic = {extras = ["email"], version = "^2.6.1"}
 pydantic-extra-types = "^2.5.0"
 
