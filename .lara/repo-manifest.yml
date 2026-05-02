@@ -1,97 +1,109 @@
 version: 1
 schema: lara.repo-manifest.v1
 repo: serverless-builder
-
 toolchain:
   runtime: python
   package_manager: poetry
   notes:
-    - "Python package managed by Poetry; pyproject.toml declares python ^3.9."
-    - "No Makefile, Taskfile, justfile, package.json, AGENTS.override.md, or .lara/toolkit.yml found."
-    - "Remote default branch is master; origin/develop is not present."
-
+  - Python package managed by Poetry; pyproject.toml declares python ^3.10.
+  - No Makefile, Taskfile, justfile, package.json, AGENTS.override.md, or .lara/toolkit.yml
+    found.
+  - Remote default branch is master; origin/develop is not present.
 commands:
   setup:
-    command: "poetry install"
-    cwd: "."
-    required: true
-    confidence: high
-    status: available
-    evidence:
-      - "pyproject.toml: [tool.poetry] project metadata and dependencies are present."
-      - "poetry.lock: committed Poetry lockfile is present."
-  test:
-    command: null
-    cwd: "."
-    required: false
-    confidence: high
-    status: unavailable
-    reason: "No tests directory, pytest dependency, tox config, CI test step, Makefile, Taskfile, justfile, or pyproject test script was found."
-    evidence:
-      - "Repository file scan found no tests directory."
-      - "pyproject.toml defines no test command or pytest dependency."
-      - ".github/workflows only define docs deployment and release publishing; neither runs tests."
-  lint:
-    command: null
-    cwd: "."
-    required: false
-    confidence: medium
-    status: unavailable
-    reason: "Lint configuration exists, but no lint tool dependency or command source defines how linting is expected to run."
-    evidence:
-      - ".flake8 contains Flake8 configuration."
-      - "pyproject.toml contains Ruff configuration but no Ruff dependency or script."
-      - "No Makefile, Taskfile, justfile, or CI lint command was found."
-  typecheck:
-    command: null
-    cwd: "."
-    required: false
-    confidence: high
-    status: unavailable
-    reason: "No typecheck command, mypy/pyright configuration, typecheck dependency, or CI typecheck step was found."
-    evidence:
-      - "pyproject.toml defines no mypy, pyright, or typecheck command."
-      - "No Makefile, Taskfile, justfile, or CI typecheck command was found."
+    infra:
+      command: poetry install
+      cwd: .
+      required: true
+      confidence: high
+      status: available
+      evidence:
+      - 'pyproject.toml: [tool.poetry] project metadata and dependencies are present.'
+      - 'poetry.lock: committed Poetry lockfile is present.'
   build:
-    command: "poetry build"
-    cwd: "."
-    required: true
-    confidence: high
-    status: available
-    evidence:
-      - "pyproject.toml declares a Poetry build backend: poetry.core.masonry.api."
-      - ".github/workflows/release.yml builds the package before publishing."
+    infra:
+      command: poetry build
+      cwd: .
+      required: true
+      confidence: high
+      status: available
+      evidence:
+      - 'pyproject.toml declares a Poetry build backend: poetry.core.masonry.api.'
+      - .github/workflows/release.yml builds the package before publishing.
+  test:
+    infra:
+      command: null
+      cwd: .
+      required: false
+      confidence: high
+      status: unavailable
+      reason: No tests directory, pytest dependency, tox config, CI test step, Makefile,
+        Taskfile, justfile, or pyproject test script was found.
+      evidence:
+      - Repository file scan found no tests directory.
+      - pyproject.toml defines no test command or pytest dependency.
+      - .github/workflows only define docs deployment and release publishing; neither
+        runs tests.
+  lint:
+    infra:
+      command: null
+      cwd: .
+      required: false
+      confidence: medium
+      status: unavailable
+      reason: Lint configuration exists, but no lint tool dependency or command source
+        defines how linting is expected to run.
+      evidence:
+      - .flake8 contains Flake8 configuration.
+      - pyproject.toml contains Ruff configuration but no Ruff dependency or script.
+      - No Makefile, Taskfile, justfile, or CI lint command was found.
+  typecheck:
+    infra:
+      command: null
+      cwd: .
+      required: false
+      confidence: high
+      status: unavailable
+      reason: No typecheck command, mypy/pyright configuration, typecheck dependency,
+        or CI typecheck step was found.
+      evidence:
+      - pyproject.toml defines no mypy, pyright, or typecheck command.
+      - No Makefile, Taskfile, justfile, or CI typecheck command was found.
   format:
-    command: null
-    cwd: "."
-    required: false
-    confidence: medium
-    status: unavailable
-    reason: "Formatter configuration exists, but no format tool dependency or command source defines how formatting is expected to run."
-    evidence:
-      - "pyproject.toml contains Black and isort configuration."
-      - "No Makefile, Taskfile, justfile, or CI format command was found."
+    infra:
+      command: null
+      cwd: .
+      required: false
+      confidence: medium
+      status: unavailable
+      reason: Formatter configuration exists, but no format tool dependency or command
+        source defines how formatting is expected to run.
+      evidence:
+      - pyproject.toml contains Black and isort configuration.
+      - No Makefile, Taskfile, justfile, or CI format command was found.
   dev:
-    command: null
-    cwd: "."
-    required: false
-    confidence: high
-    status: unavailable
-    reason: "This package exposes a CLI entry point but no documented local development server or dev command."
-    evidence:
-      - "pyproject.toml defines the slscli entry point."
-      - "README.md documents installation, usage, and release process, but no dev command."
-      - "No Makefile, Taskfile, justfile, or CI dev command was found."
-
+    infra:
+      command: null
+      cwd: .
+      required: false
+      confidence: high
+      status: unavailable
+      reason: This package exposes a CLI entry point but no documented local development
+        server or dev command.
+      evidence:
+      - pyproject.toml defines the slscli entry point.
+      - README.md documents installation, usage, and release process, but no dev command.
+      - No Makefile, Taskfile, justfile, or CI dev command was found.
 validation_policy:
   before_pr:
     required_commands:
-      - setup
-      - build
+    - setup.infra
+    - build.infra
     optional_commands:
-      - test
-      - lint
-      - typecheck
-      - format
-      - dev
-  blocked_behavior: "Run required available commands before PR creation. Do not guess unavailable commands; report them with evidence from this manifest."
+    - test.infra
+    - lint.infra
+    - typecheck.infra
+    - format.infra
+    - dev.infra
+  blocked_behavior: Run required available commands before PR creation. Do not guess
+    unavailable commands; report them with evidence from this manifest.
