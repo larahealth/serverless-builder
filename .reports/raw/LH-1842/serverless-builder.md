@@ -9,7 +9,7 @@ done
 - Base ref: main
 - Worktree: worktrees/serverless-builder/LH-1842-sdlc-migration/
 - Toolchain: Python 3.11 + Poetry, PyPI publishing, GitHub Actions v3 CI
-- Repo readiness issues: shared-actions `v3.0.0` tag and `chore/LH-1842-shared-actions-v3` ref were not available; used `feature/LH-1856-main-only-release-flow`.
+- Repo readiness issues: Using shared actions from `main`.
 
 ## Summary
 - Added v3 `.github/sdlc.yml` and `ci.yml`.

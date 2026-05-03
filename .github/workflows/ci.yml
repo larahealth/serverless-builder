@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   ci:
-    uses: larahealth/actions/.github/workflows/reusable-sdlc.yml@feature/LH-1856-main-only-release-flow
+    uses: larahealth/actions/.github/workflows/reusable-sdlc.yml@main
     secrets: inherit
     with:
       config_path: .github/sdlc.yml
