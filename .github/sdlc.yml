@@ -1,0 +1,55 @@
+version: 3
+
+project:
+  name: serverless-builder
+  type: python-library
+
+workspace:
+  strategy: artifact
+
+pr:
+  enabled: true
+  fail_fast: false
+  run_required_in_parallel: true
+  required_checks:
+    - python.install
+    - package.build
+    - security.secrets
+
+python:
+  enabled: true
+  version: "3.11"
+  working_directory: .
+  install: poetry install --no-interaction --no-ansi
+  dependency_artifact: true
+
+security:
+  enabled: true
+  secret_scan: true
+  dependency_scan: false
+  iac_scan: false
+
+event_guard:
+  enabled: false
+
+docker:
+  enabled: false
+
+terraform:
+  enabled: false
+
+deploy:
+  enabled: false
+
+package:
+  enabled: true
+  ecosystem: python
+  manager: poetry
+  working_directory: .
+  registry_url: https://upload.pypi.org/legacy/
+  publish_on: master
+
+reporting:
+  destination: s3
+  stage: dev
+  retention_days: 30
