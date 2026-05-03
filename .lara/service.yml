@@ -1,6 +1,8 @@
 version: 1
 schema: lara.service.v1
 repo: serverless-builder
+sdlc:
+  version: 3
 service:
   name: serverless-builder
   type: library
