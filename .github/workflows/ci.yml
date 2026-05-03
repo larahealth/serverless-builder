@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+  pull-requests: write
+  security-events: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    uses: larahealth/actions/.github/workflows/reusable-sdlc.yml@main
+    secrets: inherit
+    with:
+      config_path: .github/sdlc.yml
+      stage: dev
+      aws_region: us-east-1
+      role_to_assume: ${{ vars.SDLC_REPORT_ROLE_ARN || 'arn:aws:iam::705789155077:role/GitHub' }}
+      report_bucket_override: ${{ vars.SDLC_REPORT_BUCKET || '' }}
+      report_kms_key_id: ${{ vars.SDLC_REPORT_KMS_KEY_ID || '' }}
