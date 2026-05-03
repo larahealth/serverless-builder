@@ -50,6 +50,10 @@ class AppSync(Generic):
         namespace_excluded=None,
         include_top_namespace_resolver=True,
         resolver_extras: Union[List[ResolverExtra], None] = None,
+        rbac_manifest=None,
+        rbac_roles=None,
+        rbac_service_principals=None,
+        rbac_surface=None,
         **kwargs
     ):
         super().__init__("serverless-appsync-plugin")
@@ -59,8 +63,13 @@ class AppSync(Generic):
         self.xrayEnabled = xray
         self.dataSources = data_sources or {}
         self.resolvers = resolvers or {}
+        self.functions = {}
         self.namespace = namespace
         self.resolver_extras = resolver_extras or []
+        self.rbac_manifest = rbac_manifest
+        self.rbac_roles = rbac_roles
+        self.rbac_service_principals = rbac_service_principals
+        self.rbac_surface = rbac_surface
         self.update(kwargs)
         self.topNamespaceResolver = include_top_namespace_resolver
 
@@ -70,5 +79,9 @@ class AppSync(Generic):
         export.pop("namespace")
         export.pop("resolver_extras")
         export.pop("topNamespaceResolver")
+        export.pop("rbac_manifest")
+        export.pop("rbac_roles")
+        export.pop("rbac_service_principals")
+        export.pop("rbac_surface")
 
         service.appSync = export

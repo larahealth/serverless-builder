@@ -32,18 +32,13 @@ commands:
       - .github/workflows/release.yml builds the package before publishing.
   test:
     infra:
-      command: null
+      command: python -m unittest discover -s tests
       cwd: .
       required: false
       confidence: high
-      status: unavailable
-      reason: No tests directory, pytest dependency, tox config, CI test step, Makefile,
-        Taskfile, justfile, or pyproject test script was found.
+      status: available
       evidence:
-      - Repository file scan found no tests directory.
-      - pyproject.toml defines no test command or pytest dependency.
-      - .github/workflows only define docs deployment and release publishing; neither
-        runs tests.
+      - tests/ contains standard-library unittest tests.
   lint:
     infra:
       command: null
