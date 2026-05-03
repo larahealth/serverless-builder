@@ -1,10 +1,7 @@
-name: CI
+name: PR
 
 on:
   pull_request:
-  push:
-    branches: [main]
-  workflow_dispatch:
 
 permissions:
   contents: read
@@ -13,7 +10,7 @@ permissions:
   security-events: write
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: pr-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
