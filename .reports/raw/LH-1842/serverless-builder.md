@@ -6,10 +6,10 @@ done
 ## Execution context
 - Catalog entry: present
 - Repo AGENTS.md: present
-- Base ref: master documented default-branch exception
+- Base ref: main
 - Worktree: worktrees/serverless-builder/LH-1842-sdlc-migration/
 - Toolchain: Python 3.11 + Poetry, PyPI publishing, GitHub Actions v3 CI
-- Repo readiness issues: repo uses `master`, not `main`; shared-actions `v3.0.0` tag and `chore/LH-1842-shared-actions-v3` ref were not available; used `feature/LH-1856-main-only-release-flow`.
+- Repo readiness issues: shared-actions `v3.0.0` tag and `chore/LH-1842-shared-actions-v3` ref were not available; used `feature/LH-1856-main-only-release-flow`.
 
 ## Summary
 - Added v3 `.github/sdlc.yml` and `ci.yml`.
@@ -43,14 +43,14 @@ done
 - None
 
 ## Risks / rollout notes
-- CI uses `master` because the repo has no `main` branch.
+- CI uses `main`.
 - Publishing remains PyPI-based and release-triggered.
 - Shared actions ref should move to an immutable v3 tag after release.
 
 ## PR / branch info
 - Branch: `chore/LH-1842-sdlc-migration`
 - PR: not created
-- PR target/base branch: master
+- PR target/base branch: main
 - Merge / publish order: Can merge independently after shared-actions ref is available to GitHub.
 - Notes: None
 

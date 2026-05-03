@@ -47,7 +47,7 @@ package:
   manager: poetry
   working_directory: .
   registry_url: https://upload.pypi.org/legacy/
-  publish_on: master
+  publish_on: main
 
 reporting:
   destination: s3
